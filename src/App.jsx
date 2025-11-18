@@ -2,26 +2,21 @@ import { useEffect, useState } from "react";
 import Navbar from "./components/navbar";
 import { AiFillDelete } from "react-icons/ai";
 import { FaEdit } from "react-icons/fa";
-import { IoBagAdd } from "react-icons/io5";
 import { v4 as uuidv4 } from "uuid";
 
 function App() {
   const [todo, setTodo] = useState("");
-  const [todos, setTodos] = useState([]);
-  const [showFinish, setShowFinish] = useState(true);
-
-  useEffect(() => {
+  const [todos, setTodos] = useState(() => {
     let todoString = localStorage.getItem("todos");
-    if (todoString) {
-      setTodos(JSON.parse(todoString));
-    }
-  }, []);
+    return todoString ? JSON.parse(todoString) : [];
+  });
+  const [showFinish, setShowFinish] = useState(true);
 
   useEffect(() => {
     localStorage.setItem("todos", JSON.stringify(todos));
   }, [todos]);
 
-  const toggleFinished = (e) => {
+  const toggleFinished = () => {
     setShowFinish(!showFinish);
   };
 
@@ -74,7 +69,6 @@ function App() {
           iTask - Manage your todos at one place
         </h1>
         <div className="addtodo my-5 flex flex-col gap-4">
-          <h2 className="text-lg font-bold">Add a todo</h2>
           <input
             type="text"
             onChange={handleChange}
@@ -106,7 +100,7 @@ function App() {
               (showFinish || !item.isCompleted) && (
                 <div
                   key={item.id}
-                  className={"todo flex my-3 justify-between items-start w-3/4"}
+                  className={"todo flex my-3 justify-between items-start w-4/4"}
                 >
                   <div className="flex gap-3 items-start flex-1 min-w-0">
                     <input
